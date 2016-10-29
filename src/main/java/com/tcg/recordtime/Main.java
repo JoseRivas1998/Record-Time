@@ -1,12 +1,18 @@
 package com.tcg.recordtime;
 
+import com.tcg.recordtime.components.frames.CreateProfileFrame;
+import com.tcg.recordtime.managers.FileManager;
+
 /**
  * Created by JoseR on 10/29/2016.
  */
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        if(!FileManager.applicationFolderExists()) {
+            FileManager.createApplicationFolder();
+        }
+        new CreateProfileFrame();
     }
 
 }
