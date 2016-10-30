@@ -22,6 +22,25 @@ public class FileManager {
         return applicationFolder.exists();
     }
 
+    public static void saveProfilesJSON(JSONObject profiles) {
+        BufferedWriter bufferedWriter = null;
+        FileWriter fileWriter = null;
+        try {
+            File profilesJSON = new File(localAppDataFolder("Record Time") + File.separator + "profiles.json");
+            if(!profilesJSON.exists()) createProfilesJSON();
+            fileWriter = new FileWriter(profilesJSON);
+            bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write(profiles.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                bufferedWriter.close();
+                fileWriter.close();
+            } catch (Exception e) {}
+        }
+    }
+
     public static JSONObject loadProfilesJSON(boolean createNotExist) {
         BufferedReader bufferedReader = null;
         FileReader  fileReader = null;

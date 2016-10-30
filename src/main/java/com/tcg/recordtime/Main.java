@@ -1,6 +1,7 @@
 package com.tcg.recordtime;
 
 import com.tcg.recordtime.components.frames.CreateProfileFrame;
+import com.tcg.recordtime.components.frames.MainFrame;
 import com.tcg.recordtime.managers.FileManager;
 
 /**
@@ -12,7 +13,7 @@ public class Main {
         if(!FileManager.applicationFolderExists()) {
             FileManager.createApplicationFolder();
         }
-        new CreateProfileFrame();
+        new MainFrame();
     }
 
 }
