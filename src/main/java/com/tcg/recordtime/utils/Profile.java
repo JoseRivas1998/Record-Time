@@ -75,4 +75,11 @@ public class Profile implements Serializable {
         return in.readObject();
     }
 
+    @Override
+    public String toString() {
+        return "Profile{" +
+                "name='" + name + '\'' +
+                ", times=" + times +
+                '}';
+    }
 }

@@ -8,6 +8,8 @@ import org.json.JSONObject;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 
@@ -17,12 +19,15 @@ import java.io.IOException;
 public class CreateProfileFrame extends JFrame {
 
     private JSONObject profiles;
+    private boolean openOnClose;
 
     public CreateProfileFrame() {
         this(null);
+        openOnClose = true;
     }
 
     public CreateProfileFrame(Component relative) {
+        openOnClose = false;
         profiles = new JSONObject(FileManager.loadProfilesJSON(true).toString());
         setTitle("Create Profile - Record Time");
 
@@ -51,6 +56,14 @@ public class CreateProfileFrame extends JFrame {
 
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(contentPanel);
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                new MainFrame();
+            }
+        });
 
         pack();
         setLocationRelativeTo(relative);
@@ -83,7 +96,12 @@ public class CreateProfileFrame extends JFrame {
                 try {
                     Profile.save(profile, profileFile);
                     FileManager.saveProfilesJSON(profiles);
-                    JOptionPane.showMessageDialog(null, String.format("Profile \"%s\" created.", profileName), "Profile Created", JOptionPane.INFORMATION_MESSAGE);
+                    if(JOptionPane.showConfirmDialog(null, String.format("Profile \"%s\" created. Create another?", profileName), "Profile Created", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION) {
+                        if(openOnClose) new MainFrame();
+                        dispose();
+                    } else {
+                        profileIn.setText("");
+                    }
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e.getLocalizedMessage(), e.getClass().getName(), JOptionPane.ERROR_MESSAGE);
                     e.printStackTrace();
