@@ -14,7 +14,7 @@ import java.util.GregorianCalendar;
  */
 public class ViewTimesFrame extends JFrame {
 
-    String profileName;
+   private String profileName;
 
     public ViewTimesFrame() {
         if(Profile.currentProfile != null) {
