@@ -7,7 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.GregorianCalendar;
 
 /**
  * Created by JoseR on 11/1/2016.
@@ -20,7 +19,7 @@ public class ViewTimesFrame extends JFrame {
         if(Profile.currentProfile != null) {
             profileName = Profile.currentProfile.getName();
 
-            setTitle(String.format("View Times for \"%s\" | Record Time", profileName));
+            setTitle(String.format("View Times for \"%s\" - Record Time", profileName));
 
             JLabel title = new JLabel(String.format("View Times for \"%s\"", profileName));
             title.setHorizontalAlignment(JLabel.CENTER);

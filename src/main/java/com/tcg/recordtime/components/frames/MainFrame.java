@@ -33,6 +33,10 @@ public class MainFrame extends JFrame {
             });
 
             JButton stopWatch = new JButton("Stop Watch");
+            stopWatch.addActionListener(e -> {
+                new StopWatchFrame();
+                dispose();
+            });
 
             JButton viewTimes = new JButton("View Times");
             viewTimes.addActionListener(e -> {
