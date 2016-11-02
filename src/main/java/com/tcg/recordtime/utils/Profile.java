@@ -2,6 +2,7 @@ package com.tcg.recordtime.utils;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by JoseR on 10/30/2016.
@@ -10,17 +11,20 @@ public class Profile implements Serializable {
 
     private String name;
     private ArrayList<Long> times;
+    private ArrayList<Calendar> dates;
 
     public static Profile currentProfile;
 
     public Profile(String name) {
         this.name = name;
         times = new ArrayList<>();
+        dates = new ArrayList<>();
     }
 
     public Profile(Profile profile) {
         this.name = profile.getName();
         times = new ArrayList<>(profile.getTimes());
+        dates = new ArrayList<>(profile.getDates());
     }
 
     public String getName() {
@@ -41,6 +45,14 @@ public class Profile implements Serializable {
 
     public void addTime(long time) {
         times.add(time);
+    }
+
+    public ArrayList<Calendar> getDates() {
+        return dates;
+    }
+
+    public void setDates(ArrayList<Calendar> dates) {
+        this.dates = dates;
     }
 
     public static Profile load(File file) throws IOException, ClassNotFoundException {

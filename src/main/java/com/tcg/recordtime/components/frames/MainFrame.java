@@ -35,6 +35,14 @@ public class MainFrame extends JFrame {
             JButton stopWatch = new JButton("Stop Watch");
 
             JButton viewTimes = new JButton("View Times");
+            viewTimes.addActionListener(e -> {
+                if(Profile.currentProfile != null) {
+                    new ViewTimesFrame();
+                    dispose();
+                } else {
+                    JOptionPane.showMessageDialog(this, "No Profile Selected. Please select a profile", "No Profile", JOptionPane.WARNING_MESSAGE);
+                }
+            });
 
             JPanel buttons = new JPanel();
             buttons.add(createProfile);
