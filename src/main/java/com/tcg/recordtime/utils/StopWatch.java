@@ -1,5 +1,6 @@
 package com.tcg.recordtime.utils;
 
+import com.sun.prism.paint.Stop;
 import com.tcg.recordtime.components.frames.StopWatchFrame;
 
 /**
@@ -33,7 +34,7 @@ public class StopWatch extends Thread {
         while(loop) {
             if(running) {
                 time = (System.currentTimeMillis() - startTime) + pauseTime;
-
+                stopWatchFrame.setTimeText(StopWatch.formatTime(time));
             }
         }
     }
@@ -61,6 +62,16 @@ public class StopWatch extends Thread {
     public long kill() {
         stopStopWatch();
         loop = false;
+        return time;
+    }
+
+    public void revive(boolean start) {
+        stopStopWatch();
+        loop = true;
+        if(start) startStopWatch();
+    }
+
+    public long getTime() {
         return time;
     }
 
