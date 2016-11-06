@@ -65,10 +65,19 @@ public class StopWatch extends Thread {
         return time;
     }
 
-    public void revive(boolean start) {
-        stopStopWatch();
-        loop = true;
-        if(start) startStopWatch();
+
+    public void resetTime() {
+        time = 0;
+        pauseTime = 0;
+        stopWatchFrame.setTimeText(StopWatch.formatTime(time));
+    }
+
+    public boolean isRunning() {
+        return running;
+    }
+
+    public boolean isLooping() {
+        return loop;
     }
 
     public long getTime() {

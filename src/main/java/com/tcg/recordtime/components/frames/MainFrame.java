@@ -19,7 +19,7 @@ import java.util.List;
 public class MainFrame extends JFrame {
 
     public MainFrame() {
-        if(loadProfiles().size() > 0) {
+        if(Profile.loadProfiles().size() > 0) {
             setTitle("Record Time");
             setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -48,13 +48,37 @@ public class MainFrame extends JFrame {
                 }
             });
 
+            JPanel bRow1 = new JPanel();
+            bRow1.add(createProfile);
+            bRow1.add(stopWatch);
+            bRow1.add(viewTimes);
+
+            JButton manageProfiles = new JButton("Profiles");
+            manageProfiles.addActionListener(e -> {
+                new ProfilesFrame();
+                dispose();
+            });
+
+            JButton manageProfile = new JButton("Manage Profile");
+
+            JButton about = new JButton("About");
+            about.addActionListener(e -> {
+                new AboutFrame();
+                dispose();
+            });
+
+            JPanel bRow2 = new JPanel();
+            bRow2.add(manageProfiles);
+            bRow2.add(manageProfile);
+            bRow2.add(about);
+
             JPanel buttons = new JPanel();
-            buttons.add(createProfile);
-            buttons.add(stopWatch);
-            buttons.add(viewTimes);
+            buttons.setLayout(new BorderLayout());
+            buttons.add(bRow1, BorderLayout.NORTH);
+            buttons.add(bRow2, BorderLayout.SOUTH);
 
             JComboBox<String> profileBox = new JComboBox<>();
-            List<Profile> profiles = new ArrayList<>(loadProfiles());
+            List<Profile> profiles = new ArrayList<>(Profile.loadProfiles());
             profiles.sort(new Comparator<Profile>() {
                 @Override
                 public int compare(Profile p1, Profile p2) {
@@ -77,7 +101,6 @@ public class MainFrame extends JFrame {
                     }
                 }
             }
-
 
             JPanel bottomPanel = new JPanel();
             bottomPanel.setLayout(new BorderLayout());
@@ -104,20 +127,6 @@ public class MainFrame extends JFrame {
         }
     }
 
-    private List<Profile> loadProfiles() {
-        JSONObject profiles = new JSONObject(FileManager.loadProfilesJSON(true).toString());
-        JSONArray profilesArr = profiles.getJSONArray("profiles");
-        List<Profile> profileList = new ArrayList<>();
-        for(int i = 0; i < profilesArr.length(); i++) {
-            String fileName = profilesArr.getJSONObject(i).getString("file");
-            File profileFile = new File(FileManager.localAppDataFolder("Record Time") + File.separator + fileName);
-            try {
-                profileList.add(Profile.load(profileFile));
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-        return profileList;
-    }
+
 
 }
