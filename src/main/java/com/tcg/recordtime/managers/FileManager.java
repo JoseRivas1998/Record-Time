@@ -4,6 +4,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.file.CopyOption;
+import java.nio.file.Files;
 
 /**
  * Created by JoseR on 10/29/2016.
@@ -102,6 +106,19 @@ public class FileManager {
 
     public static String localAppDataFolder(String subfolder) {
         return System.getProperty("user.home") + File.separator + "AppData" + File.separator + "Local" + File.separator + "Tiny Country Games" + File.separator + subfolder;
+    }
+
+    public static boolean downloadToFile(String url, File target, CopyOption... options) {
+        boolean copied = false;
+        try {
+            URL webFile = new URL(url);
+            InputStream in = webFile.openStream();
+            Files.copy(in, target.toPath(), options);
+            copied = true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return copied;
     }
 
 }
