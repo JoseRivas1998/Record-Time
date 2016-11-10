@@ -97,6 +97,12 @@ public class ProfilesFrame extends JFrame {
                 }
             });
 
+            JButton createProfile = new JButton("Create Profile");
+            createProfile.addActionListener(e -> {
+                new CreateProfileFrame();
+                dispose();
+            });
+
             JButton renameButton = new JButton("Rename");
             renameButton.addActionListener(e -> renameProfile(renameField));
 
@@ -107,6 +113,7 @@ public class ProfilesFrame extends JFrame {
             JPanel buttons = new JPanel();
             buttons.add(viewTimes);
             buttons.add(deleteProfile);
+            buttons.add(createProfile);
 
             JPanel controlPanel = new JPanel();
             controlPanel.setLayout(new BorderLayout());

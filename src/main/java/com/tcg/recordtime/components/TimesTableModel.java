@@ -39,7 +39,13 @@ public class TimesTableModel extends AbstractTableModel {
         switch (columnIndex) {
             case 0:
                 Calendar calendar = profile.getDates().get(rowIndex);
-                return String.format("%d/%d/%d", calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.YEAR));
+                int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                String ampm = "AM";
+                if(hour > 12) {
+                    hour -= 12;
+                    ampm = "PM";
+                }
+                return String.format("%d/%d/%d %d:%d %s", calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.YEAR), hour, calendar.get(Calendar.MINUTE), ampm);
             case 1:
                 return StopWatch.formatTime(profile.getTimes().get(rowIndex));
             default:

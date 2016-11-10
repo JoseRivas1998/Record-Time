@@ -91,4 +91,20 @@ public class StopWatch extends Thread {
         long hours   = ((time / (1000*60*60)) % 24);
         return String.format("%02d:%02d:%02d.%03d", hours, minutes, (long) seconds, millis);
     }
+
+    public static long hours(long time) {
+        return ((time / (1000*60*60)) % 24);
+    }
+
+    public static long minutes(long time) {
+        return ((time / (1000*60)) % 60);
+    }
+
+    public static double seconds(long time) {
+        return ((time / 1000.0) % 60);
+    }
+
+    public static long millis(long time) {
+        return (long) ((seconds(time) - (long) seconds(time)) * 1000);
+    }
 }

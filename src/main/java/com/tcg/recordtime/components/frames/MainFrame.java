@@ -60,6 +60,10 @@ public class MainFrame extends JFrame {
             });
 
             JButton manageProfile = new JButton("Manage Profile");
+            manageProfile.addActionListener(e -> {
+                new ManageProfileFrame();
+                dispose();
+            });
 
             JButton about = new JButton("About");
             about.addActionListener(e -> {
