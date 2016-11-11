@@ -152,6 +152,56 @@ public class ManageProfileFrame extends JFrame {
                 }
             });
 
+            JButton viewTimes = new JButton("View Times");
+            viewTimes.addActionListener(e -> {
+                dispose();
+                new ViewTimesFrame();
+            });
+
+            JButton deleteTime = new JButton("Delete Time");
+            deleteTime.addActionListener(e -> {
+                Calendar calendar = Profile.currentProfile.getDates().get(timeComboBox.getSelectedIndex());
+                int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                String ampm = "AM";
+                if(hour > 12) {
+                    hour -= 12;
+                    ampm = "PM";
+                }
+                String timeString = String.format("%d/%d/%d %d:%d %s - %s", calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.YEAR), hour, calendar.get(Calendar.MINUTE), ampm, StopWatch.formatTime(Profile.currentProfile.getTimes().get(timeComboBox.getSelectedIndex())));
+                if(JOptionPane.showConfirmDialog(this, String.format("Delete time \"%s\"?", timeString), "Delete time?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    int delete = timeComboBox.getSelectedIndex();
+                    Profile.currentProfile.getTimes().remove(delete);
+                    Profile.currentProfile.getDates().remove(delete);
+                    String profileName = Profile.currentProfile.getName();
+                    JSONArray profileArr = FileManager.loadProfilesJSON(false).getJSONArray("profiles");
+                    String fileName = "";
+                    for (int i = 0; i < profileArr.length(); i++) {
+                        String name = profileArr.getJSONObject(i).getString("name");
+                        if (name.equalsIgnoreCase(profileName)) {
+                            fileName = profileArr.getJSONObject(i).getString("file");
+                            break;
+                        }
+                    }
+                    if (fileName.length() > 0) {
+                        File profileFile = new File(FileManager.localAppDataFolder("Record Time") + File.separator + fileName);
+                        try {
+                            Profile.save(Profile.currentProfile, profileFile);
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                            JOptionPane.showMessageDialog(this, e1.getMessage(), e.getClass().getName(), JOptionPane.ERROR_MESSAGE);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Unable to find profile", "Profile error", JOptionPane.ERROR_MESSAGE);
+                    }
+                    dispose();
+                    new ManageProfileFrame(Math.min(delete, Profile.currentProfile.getDates().size()- 1));
+                }
+            });
+
+            JPanel buttonPanel = new JPanel();
+            buttonPanel.add(viewTimes);
+            buttonPanel.add(deleteTime);
+
             JPanel addPanel = new JPanel();
             addPanel.add(aHourField);
             addPanel.add(new JLabel(":"));
@@ -171,6 +221,7 @@ public class ManageProfileFrame extends JFrame {
             controlPanel.setLayout(new BorderLayout());
             controlPanel.add(timeComboBox, BorderLayout.NORTH);
             controlPanel.add(updateAddPanel, BorderLayout.CENTER);
+            controlPanel.add(buttonPanel, BorderLayout.SOUTH);
 
             JPanel content = new JPanel();
             content.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
